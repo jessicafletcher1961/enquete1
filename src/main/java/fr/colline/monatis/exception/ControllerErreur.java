@@ -425,7 +425,7 @@ public enum ControllerErreur {
 			"CPTI-0007",
 			"Un compte interne doit obligatoirement avoir un identifiant"),
 	 */
-	COMPTE_INTERNE_IDENTIFIANT_OBLIGATOIRE(			
+	COMPTE_INTERNE_IDENTIFIANT_OBLIGATOIRE(
 			HttpStatus.BAD_REQUEST,
 			TypeErreur.FONCTIONNELLE,
 			"CPTI-0007",
@@ -454,7 +454,20 @@ public enum ControllerErreur {
 			TypeErreur.FONCTIONNELLE,
 			"CPTI-0009",
 			"Aucun type de compte interne de code '%s' n'a été trouvé"),
+
 	
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPTI-0010",
+			"Le compte interne d'identifiant '%s' doit avoir au moins un titulaire"),
+	 */
+	COMPTE_INTERNE_AU_MOINS_UN_TITULAIRE_REQUIS(
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPTI-0010",
+			"Le compte interne doit avoir au moins un titulaire"),
+
 	/**
 			HttpStatus.NOT_FOUND,
 			TypeErreur.FONCTIONNELLE,
@@ -620,7 +633,20 @@ public enum ControllerErreur {
 			HttpStatus.BAD_REQUEST,
 			TypeErreur.FONCTIONNELLE,
 			"OPE-0010",
-			"L'opération numéro '%s' n'a pas de ligne de détail correspondant à la séquence %s"),
+			"L'opération numéro '%s' n'a pas de ligne de détail correspondant à la séquence %s"), 
+
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.PROGRAMMATION,
+			"OPE-0011",
+			"Une opération doit obligatoirement avoir un numero"),
+	 */
+	OPERATION_NUMERO_OBLIGATOIRE(			
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.PROGRAMMATION,
+			"OPE-0011",
+			"Une opération doit obligatoirement avoir un numero"), 
+	
 	
 	;
 	private HttpStatus status;

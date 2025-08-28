@@ -8,7 +8,7 @@ import fr.colline.monatis.repository.CompteTiersRepository;
 
 @Service public class CompteTiersService extends CompteService<CompteTiers>{
 
-	@Autowired private CompteTiersRepository repository;
+	@Autowired private CompteTiersRepository compteTiersRepository;
 
 	@Override
 	protected Class<CompteTiers> getTClass() {
@@ -18,6 +18,6 @@ import fr.colline.monatis.repository.CompteTiersRepository;
 	
 	public CompteTiersRepository getRepository() {
 		
-		return repository;
+		return compteTiersRepository;
 	}
 }

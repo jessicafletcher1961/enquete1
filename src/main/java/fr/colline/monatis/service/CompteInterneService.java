@@ -2,6 +2,7 @@ package fr.colline.monatis.service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,18 +10,25 @@ import org.springframework.stereotype.Service;
 import fr.colline.monatis.exception.ServiceFonctionnelleErreur;
 import fr.colline.monatis.exception.ServiceFonctionnelleException;
 import fr.colline.monatis.exception.ServiceTechniqueException;
+import fr.colline.monatis.model.Banque;
 import fr.colline.monatis.model.CompteInterne;
+import fr.colline.monatis.model.Titulaire;
 import fr.colline.monatis.repository.CompteInterneRepository;
 import fr.colline.monatis.repository.CompteRepository;
+import fr.colline.monatis.typologie.TypeCompteInterne;
+import jakarta.annotation.Nullable;
 
-@Service public class CompteInterneService extends CompteService<CompteInterne>{
+@Service public class CompteInterneService extends CompteService<CompteInterne> {
 
-	@Autowired private CompteInterneRepository repository;
+	@Autowired private CompteInterneRepository compteInterneRepository;
 
+	@Autowired private BanqueService banqueService;
+	@Autowired private TitulaireService titulaireService;
+	
 	@Override
 	protected CompteRepository<CompteInterne> getRepository() {
 
-		return repository;
+		return compteInterneRepository;
 	}
 
 	@Override
@@ -37,31 +45,15 @@ import fr.colline.monatis.repository.CompteRepository;
 		// Vérifications id et identifiant 
 		compteInterne = super.controlerEtPreparerPourCreation(compteInterne);
 
-		// Type du compte interne : attribut obligatoire
-		if ( compteInterne.getTypeCompteInterne() == null ) {
-			throw new ServiceFonctionnelleException (
-					ServiceFonctionnelleErreur.COMPTE_INTERNE_TYPE_COMPTE_NULL);
-		}
+		// Vérification validité attributs obligatoires
+		verifierTypeCompteInterne(compteInterne.getTypeCompteInterne());
+		verifierBanqueEnregistree(compteInterne.getBanque());
+		verifierTitulairesEnregistres(compteInterne.getTitulaires());
 
-		// Banque obligatoire
-		if ( compteInterne.getBanque() == null ) {
-			throw new ServiceFonctionnelleException (
-					ServiceFonctionnelleErreur.COMPTE_INTERNE_BANQUE_REQUISE);
-		}
-
-		// Titulaires : au moins un titulaire requis
-		if ( compteInterne.getTitulaires() == null
-				|| compteInterne.getTitulaires().size() < 1 ) {
-			throw new ServiceFonctionnelleException (
-					ServiceFonctionnelleErreur.COMPTE_INTERNE_AU_MOINS_UN_TITULAIRE_REQUIS);
-		}
-
-		// Date solde initial : valeur par défaut = now()
+		// Initialisations avec valeurs par défaut
 		if ( compteInterne.getDateSoldeInitial() == null ) {
 			compteInterne.setDateSoldeInitial(Timestamp.from(Instant.now()));
 		}
-		
-		// Montant solde initial : valeur par défaut = 0L
 		if ( compteInterne.getMontantSoldeInitialEnCentimes() == null ) {
 			compteInterne.setMontantSoldeInitialEnCentimes(0L);
 		}
@@ -75,25 +67,60 @@ import fr.colline.monatis.repository.CompteRepository;
 
 		compteInterne = super.controlerEtPreparerPourModification(compteInterne);
 
-		if ( compteInterne.getTypeCompteInterne() == null ) {
-			throw new ServiceFonctionnelleException (
-					ServiceFonctionnelleErreur.COMPTE_INTERNE_TYPE_COMPTE_NULL);
-		}
+		verifierTypeCompteInterne(compteInterne.getTypeCompteInterne());
+		verifierBanqueEnregistree(compteInterne.getBanque());
+		verifierTitulairesEnregistres(compteInterne.getTitulaires());
 
-		// Banque obligatoire
-		if ( compteInterne.getBanque() == null ) {
+		return compteInterne;
+	}
+	
+	private void verifierTypeCompteInterne(TypeCompteInterne typeCompteInterne) 
+			throws ServiceFonctionnelleException {
+
+		if ( typeCompteInterne == null ) {
 			throw new ServiceFonctionnelleException (
+					ServiceFonctionnelleErreur.COMPTE_INTERNE_TYPE_COMPTE_REQUIS);
+		}
+	}
+	
+	private void verifierBanqueEnregistree(Banque banque) 
+			throws ServiceFonctionnelleException, ServiceTechniqueException {
+		
+		if ( banque == null ) {
+			throw new ServiceFonctionnelleException(
 					ServiceFonctionnelleErreur.COMPTE_INTERNE_BANQUE_REQUISE);
 		}
+		
+		if ( banque.getId() == null 
+				|| ! banqueService.isExistantParId(banque.getId()) ) {
+			throw new ServiceFonctionnelleException(
+					ServiceFonctionnelleErreur.BANQUE_NON_ENREGISTREE_PAR_ID,
+					banque.getId());
+		}
+	}
+	
+	private void verifierTitulairesEnregistres(@Nullable Set<Titulaire> titulaires) 
+			throws ServiceFonctionnelleException, ServiceTechniqueException {
 
-		// Titulaires : au moins un titulaire requis
-		if ( compteInterne.getTitulaires() == null
-				|| compteInterne.getTitulaires().size() < 1 ) {
+		if ( titulaires == null ) {
+			throw new ServiceFonctionnelleException (
+					ServiceFonctionnelleErreur.COMPTE_INTERNE_TABLEAU_TITULAIRE_REQUIS);
+		}
+		if ( titulaires.size() == 0 ) {
 			throw new ServiceFonctionnelleException (
 					ServiceFonctionnelleErreur.COMPTE_INTERNE_AU_MOINS_UN_TITULAIRE_REQUIS);
 		}
-
-
-		return compteInterne;
+		for ( Titulaire titulaire : titulaires ) {
+			if ( titulaire == null ) {
+				throw new ServiceFonctionnelleException(
+						ServiceFonctionnelleErreur.COMPTE_INTERNE_TABLEAU_TITULAIRE_CONTIENT_UN_TITULAIRE_NULL);
+			}
+			if ( titulaire.getId() == null 
+					|| ! titulaireService.isExistantParId(titulaire.getId()) ) {
+				throw new ServiceFonctionnelleException(
+						ServiceFonctionnelleErreur.TITULAIRE_NON_ENREGISTRE_PAR_ID,
+						titulaire.getId());
+			}
+		}
 	}
 }

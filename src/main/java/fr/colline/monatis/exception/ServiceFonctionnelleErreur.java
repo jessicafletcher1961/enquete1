@@ -18,12 +18,12 @@ public enum ServiceFonctionnelleErreur {
 			"Dans le cadre de la création d'une nouvelle référence [type %s], il ne doit pas y avoir d'id (id présent : %s)"),
 
 	/**
-			TypeErreur.FONCTIONNELLE,
+			TypeErreur.PROGRAMMATION,
 			"REF-0002",
 			"Une référence [type %s] doit obligatoirement avoir un nom valide"),
 	 */
 	REFERENCE_NOM_INVALIDE(
-			TypeErreur.FONCTIONNELLE,
+			TypeErreur.PROGRAMMATION,
 			"REF-0003",
 			"Une référence [type %s] doit obligatoirement avoir un nom valide"),
 
@@ -157,7 +157,7 @@ public enum ServiceFonctionnelleErreur {
 			"SSC-0002",
 			"Une sous-catégorie est obligatoirement associée à une catégorie"),
 	 */
-	SOUS_CATEGORIE_SANS_CATEGORIE(
+	SOUS_CATEGORIE_CATEGORIE_REQUISE(
 			TypeErreur.FONCTIONNELLE,
 			"SSC-0002",
 			"Une sous-catégorie est obligatoirement associée à une catégorie"),
@@ -252,21 +252,21 @@ public enum ServiceFonctionnelleErreur {
 	/**
 			TypeErreur.PROGRAMMATION,
 			"CPT-0005",
-			"Dans le cadre de la suppression ou de la modification d'un compte [type %s], il doit obligatoirement y avoir un id)"),
+			"Le compte indiqué (id %s) est déjà enregistrée en base [type %s]"),
 	 */
-	COMPTE_SUPPRESSION_MODIFICATION_ID_NULL(
+	COMPTE_DEJA_ENREGISTRE_PAR_ID(
 			TypeErreur.PROGRAMMATION,
 			"CPT-0005",
-			"Dans le cadre de la suppression ou de la modification d'un compte [type %s], il doit obligatoirement y avoir un id)"),
+			"Le compte indiqué (id %s) est déjà enregistrée en base [type %s]"),
 
 	/**
 			TypeErreur.FONCTIONNELLE,
-			"CPT-0006",
+			"CPT-0007",
 			"Le compte '%s' ne peut être supprimé car il est encore relié à %s opérations"),
 	 */
 	COMPTE_SUPPRESSION_AVEC_OPERATION(
 			TypeErreur.FONCTIONNELLE,
-			"CPT-0006",
+			"CPT-0007",
 			"Le compte '%s' ne peut être supprimé car il est encore relié à %s opérations"),
 
 
@@ -277,10 +277,10 @@ public enum ServiceFonctionnelleErreur {
 			"INT-0001",
 			"Le compte interne doit obligatoirement être associé à un type de compte (compte en euros, livret, assurance-vie..."), 
 	 */
-	COMPTE_INTERNE_TYPE_COMPTE_NULL(
+	COMPTE_INTERNE_TYPE_COMPTE_REQUIS(
 			TypeErreur.FONCTIONNELLE,
 			"INT-0001",
-			"Le compte interne doit obligatoirement être associé à un type de compte (compte en euros, livret, assurance-vie...)"), 
+			"Le compte interne doit obligatoirement être associé à un type de compte (compte courant, livret, assurance-vie...)"), 
 	
 	/**
 			TypeErreur.FONCTIONNELLE,
@@ -298,9 +298,29 @@ public enum ServiceFonctionnelleErreur {
 			"Le compte interne doit avoir une banque"),
 	 */
 	COMPTE_INTERNE_BANQUE_REQUISE(
-			TypeErreur.FONCTIONNELLE,
+			TypeErreur.PROGRAMMATION,
 			"INT-0003",
 			"Le compte interne doit avoir une banque"),
+	
+	/**
+			TypeErreur.PROGRAMMATION,
+			"INT-0004",
+			"Le compte interne doit avoir un tableau de titulaires"),
+	 */
+	COMPTE_INTERNE_TABLEAU_TITULAIRE_REQUIS(
+			TypeErreur.PROGRAMMATION,
+			"INT-0004",
+			"Le compte interne doit avoir un tableau de titulaires"),
+
+	/**
+			TypeErreur.PROGRAMMATION,
+			"INT-0005",
+			"Le tableau de titulaires contient un titulaire null"),
+	 */
+	COMPTE_INTERNE_TABLEAU_TITULAIRE_CONTIENT_UN_TITULAIRE_NULL(
+			TypeErreur.PROGRAMMATION,
+			"INT-0005",
+			"Le tableau de titulaires contient un titulaire null"),
 	
 	// -------------------------- //
 	// --- DOMAINE OPERATIONS --- //

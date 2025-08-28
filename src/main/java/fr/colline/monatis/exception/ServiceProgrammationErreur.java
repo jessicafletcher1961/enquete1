@@ -222,8 +222,9 @@ public enum ServiceProgrammationErreur {
 			"La référence passée en paramètre de cette méthode est obligatoire [%s]"),
 
 	/**
-	 * La catégorie passée en paramètre de cette méthode est obligatoire [%s]<br>
-	 * value1 : contexte (T.class.simpleName() ou autre String comme "Operation" par exemple...)
+			TypeErreur.PROGRAMMATION,
+			"PARAM-0016",
+			"La catégorie passée en paramètre de cette méthode est obligatoire [%s]"),
 	 */
 	CATEGORIE_NULL(
 			TypeErreur.PROGRAMMATION,

@@ -145,6 +145,7 @@ public class SousCategorieController {
 						ControllerErreur.SOUS_CATEGORIE_NON_TROUVEE_PAR_NOM,
 						nom);
 			}
+			sousCategorie.changerCategorie(null);
 			sousCategorieService.supprimerReference(sousCategorie.getId());
 		} 
 		catch (ServiceTechniqueException e) {
@@ -167,7 +168,7 @@ public class SousCategorieController {
 
 		sousCategorie.setNom(verifierNom(dto.nom));
 		sousCategorie.setLibelle(verifierLibelle(dto.libelle));
-		sousCategorie.setCategorie(verifierCategorieEnregistree(dto.nomCategorie));
+		sousCategorie.changerCategorie(verifierCategorieEnregistree(dto.nomCategorie));
 
 		return sousCategorie;
 	}
@@ -179,7 +180,7 @@ public class SousCategorieController {
 
 		if ( dto.nom != null ) sousCategorie.setNom(verifierNom(dto.nom));
 		if ( dto.libelle != null ) sousCategorie.setLibelle(verifierLibelle(dto.libelle));
-		if ( dto.nomCategorie != null ) sousCategorie.setCategorie(verifierCategorieEnregistree(dto.nomCategorie));
+		if ( dto.nomCategorie != null ) sousCategorie.changerCategorie(verifierCategorieEnregistree(dto.nomCategorie));
 
 		return sousCategorie;
 	}

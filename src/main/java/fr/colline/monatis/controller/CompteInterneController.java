@@ -152,6 +152,9 @@ public class CompteInterneController {
 						ControllerErreur.COMPTE_INTERNE_NON_TROUVE_PAR_IDENTIFIANT,
 						identifiant);
 			}
+//			compteInterne.changerBanque(null);
+//			compteInterne.getTitulaires().clear();
+//			compteInterne.changerTitulaires(compteInterne.getTitulaires());
 			compteInterneService.supprimerCompte(compteInterne.getId());
 		}
 		catch ( ServiceTechniqueException e ) {
@@ -177,8 +180,8 @@ public class CompteInterneController {
 		compteInterne.setDateSoldeInitial(verifierDateSoldeInitial(dto.dateSoldeInitial));
 		compteInterne.setMontantSoldeInitialEnCentimes(verifierMontantSoldeInitial(dto.montantSoldeInitialEnCentimes));
 		compteInterne.setTypeCompteInterne(verifierTypeCompteInterne(dto.typeCompteInterne));
-		compteInterne.setBanque(verifierBanqueEnregistree(dto.nomBanque));
-		compteInterne.setTitulaires(verifierTitulairesEnregistres(dto.nomsTitulaires));
+		compteInterne.changerBanque(verifierBanqueEnregistree(dto.nomBanque));
+		compteInterne.changerTitulaires(verifierTitulairesEnregistres(dto.nomsTitulaires));
 
 		return compteInterne;
 	}
@@ -193,8 +196,8 @@ public class CompteInterneController {
 		if ( dto.dateSoldeInitial != null ) compteInterne.setDateSoldeInitial(verifierDateSoldeInitial(dto.dateSoldeInitial));
 		if ( dto.montantSoldeInitialEnCentimes != null ) compteInterne.setMontantSoldeInitialEnCentimes(verifierMontantSoldeInitial(dto.montantSoldeInitialEnCentimes));
 		if ( dto.typeCompteInterne != null ) compteInterne.setTypeCompteInterne(verifierTypeCompteInterne(dto.typeCompteInterne));
-		if ( dto.nomBanque != null ) compteInterne.setBanque(verifierBanqueEnregistree(dto.nomBanque));
-		if ( dto.nomsTitulaires != null ) compteInterne.setTitulaires(verifierTitulairesEnregistres(dto.nomsTitulaires));
+		if ( dto.nomBanque != null ) compteInterne.changerBanque(verifierBanqueEnregistree(dto.nomBanque));
+		if ( dto.nomsTitulaires != null ) compteInterne.changerTitulaires(verifierTitulairesEnregistres(dto.nomsTitulaires));
 
 		return compteInterne;
 	}
@@ -276,6 +279,12 @@ public class CompteInterneController {
 					ControllerErreur.COMPTE_INTERNE_TABLEAU_NOM_TITULAIRE_OBLIGATOIRE);
 		}
 		
+		if ( nomsTitulaires.size() == 0 ) {
+			
+			throw new ControllerException(
+					ControllerErreur.COMPTE_INTERNE_AU_MOINS_UN_TITULAIRE_REQUIS);
+		}
+
 		for ( String nomTitulaire : nomsTitulaires ) {
 			try {
 				Titulaire titulaire = titulaireService.rechercherParNom(nomTitulaire);
@@ -292,6 +301,7 @@ public class CompteInterneController {
 						ControllerErreur.ERREUR_TECHNIQUE);
 			}
 		}
+
 		return titulaires;
 	}
 }

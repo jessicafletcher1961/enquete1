@@ -306,7 +306,7 @@ public class InitController {
 			operationCreationRequestDto.nomsBeneficiaires.add(odile.getNom());
 			operationCreationRequestDto.nomsBeneficiaires.add(thierry.getNom());
 			operationCreationRequestDto.nomSousCategorie = menage.getNom();
-			operationCreationRequestDto.numero = "CHQ 00000001";
+			operationCreationRequestDto.numero = "CHQ-00000001";
 			operationController.creerOperation(operationCreationRequestDto);
 
 			operationCreationRequestDto = new OperationCreationRequestDto();
@@ -318,7 +318,7 @@ public class InitController {
 			operationCreationRequestDto.nomsBeneficiaires = new ArrayList<>();
 			operationCreationRequestDto.nomsBeneficiaires.add(nicole.getNom());
 			operationCreationRequestDto.nomSousCategorie = menage.getNom();
-			operationCreationRequestDto.numero = "	";
+			operationCreationRequestDto.numero = "CBO-665206406A";
 			operationController.creerOperation(operationCreationRequestDto);
 			
 			operationCreationRequestDto = new OperationCreationRequestDto();

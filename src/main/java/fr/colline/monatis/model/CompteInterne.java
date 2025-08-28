@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import fr.colline.monatis.typologie.TypeCompteInterne;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,8 +31,7 @@ public class CompteInterne extends Compte {
 	@JoinColumn(name = "banque_id")
 	private Banque banque;
 
-	@ManyToMany(
-			fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "compte_interne_titulaire", 
 	  joinColumns = @JoinColumn(name = "compte_interne_id"), 
@@ -92,7 +92,7 @@ public class CompteInterne extends Compte {
 		this.montantSoldeInitialEnCentimes = montantSoldeInitialEnCentimes;
 	}
 
-	public void changerBanque(Banque nouvelleBanque) {
+	public void changerBanque(@Nullable Banque nouvelleBanque) {
 		if (Objects.equals(this.banque, nouvelleBanque)) 
 			return;
 		if (this.banque != null) 

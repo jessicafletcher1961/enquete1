@@ -317,7 +317,39 @@ public enum ServiceTechniqueErreur {
 	PROG_RECHERCHE_PAR_IDENTIFIANT_IMPOSSIBLE(
 			TypeErreur.PROGRAMMATION,
 			"PROG-0002",
-			"La recherche par identifiant ne s'applique qu'aux comptes spécialisées, pas aux comptes génériques %s"),
+			"La recherche par identifiant ne s'applique qu'aux comptes spécialisées, pas aux comptes génériques %s"), 
+	
+	/**
+			TypeErreur.PROGRAMMATION,
+			"PROG-0003",
+			"La recherche de l'ancienne catégorie de la sous-catégorie %s a échoué"),
+	 */
+	TECH_GESTION_BIDIRECTIONNALITE_SOUS_CATEGORIE_CATEGORIE(
+			TypeErreur.PROGRAMMATION,
+			"PROG-0003",
+			"La recherche de l'ancienne catégorie de la sous-catégorie %s a échoué"),
+
+	/**
+			TypeErreur.PROGRAMMATION,
+			"PROG-0003",
+			"La recherche de l'ancienne banque du compte interne %s a échoué"),
+	 */
+	TECH_GESTION_BIDIRECTIONNALITE_COMPTE_INTERNE_BANQUE(
+			TypeErreur.PROGRAMMATION,
+			"PROG-0003",
+			"La recherche de l'ancienne banque du compte interne %s a échoué"),
+	
+	/**
+			TypeErreur.PROGRAMMATION,
+			"PROG-0004",
+			"La recherche des anciens titulaires du compte interne %s a échoué"),
+	 */
+	TECH_GESTION_BIDIRECTIONNALITE_COMPTE_INTERNE_TITULAIRES(
+			TypeErreur.PROGRAMMATION,
+			"PROG-0004",
+			"La recherche des anciens titulaires du compte interne %s a échoué"),
+
+	 
 	;
 	
 	private TypeErreur type;

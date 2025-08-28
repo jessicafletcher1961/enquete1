@@ -23,6 +23,6 @@ public abstract interface CompteRepository<T extends Compte> extends JpaReposito
 	public boolean existsByIdentifiantAndIdNot(String identifiant, Long id);
 
 	@Query(nativeQuery = true,
-			value = "select count(id) from operation where compte_depense_id = :compte_id or compte_recette_id = :compte_id")
+			value = "select count(1) from operation where compte_depense_id = :compte_id or compte_recette_id = :compte_id")
 	public int countOperationAssociee(@Param("compte_id") Long compteId);	
 }

@@ -3,15 +3,12 @@ package fr.colline.monatis.controller;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +37,11 @@ import fr.colline.monatis.service.CompteTousTypeService;
 import fr.colline.monatis.service.DetailOperationService;
 import fr.colline.monatis.service.OperationService;
 import fr.colline.monatis.service.SousCategorieService;
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/monatis/operations")
+@Transactional
 public class OperationController {
 
 	@Autowired private OperationService operationService;
@@ -51,8 +50,6 @@ public class OperationController {
 	@Autowired private CompteTousTypeService compteTousTypeService;
 	@Autowired private SousCategorieService sousCategorieService;
 	@Autowired private BeneficiaireService beneficiaireService;
-
-	private static Random generateurNumeroOperation = new Random(Date.from(Instant.now()).getTime());
 
 	@GetMapping("/all")
 	public List<OperationResponseDto> getAllOperation() 
@@ -76,11 +73,10 @@ public class OperationController {
 	}
 
 	@GetMapping("/get/{numero}")
-	public OperationResponseDto getOperationParNumero(
-			@PathVariable(name = "numero") String numero) 
-					throws ControllerException {
+	public OperationResponseDto getOperationParNumero(@PathVariable(name = "numero") String numero) 
+			throws ControllerException {
 
-		Assert.hasText(numero, "Le numéro de l'opération est obligatoire");
+		numero = verifierNumero(numero);
 
 		try {
 			Operation operation = operationService.rechercherParNumero(numero);
@@ -99,9 +95,8 @@ public class OperationController {
 	}
 
 	@PostMapping("/new")
-	public OperationResponseDto creerOperation(
-			@RequestBody OperationCreationRequestDto dto) 
-					throws ControllerException {
+	public OperationResponseDto creerOperation(@RequestBody OperationCreationRequestDto dto) 
+			throws ControllerException {
 
 		try {
 			Operation operation = new Operation();
@@ -124,18 +119,18 @@ public class OperationController {
 
 	@PutMapping("/mod/{numero}")
 	public OperationResponseDto modifierOperation(
-			@PathVariable(name = "numero") String numeroInitial,
+			@PathVariable(name = "numero") String numero,
 			@RequestBody OperationModificationRequestDto dto) 
 					throws ControllerException {
 
-		Assert.hasText(numeroInitial, "Le numéro de l'opération est obligatoire");
+		numero = verifierNumero(numero);
 
 		try {
-			Operation operation = operationService.rechercherParNumero(numeroInitial);
+			Operation operation = operationService.rechercherParNumero(numero);
 			if ( operation == null ) {
 				throw new ControllerException(
 						ControllerErreur.OPERATION_NON_TROUVEE_PAR_NUMERO,
-						numeroInitial);
+						numero);
 			}
 			operation = modificationRequestDtoToModel(operation, dto);
 			operation = operationService.modifierOperation(operation);
@@ -150,23 +145,22 @@ public class OperationController {
 			throw new ControllerException(
 					e,
 					ControllerErreur.OPERATION_MODIFICATION_PROBLEME,
-					numeroInitial);
+					numero);
 		}
 	}
 
 	@DeleteMapping("/del/{numero}")
-	public void supprimerOperation(
-			@PathVariable(name = "numero") String numeroInitial) 
+	public void supprimerOperation(@PathVariable(name = "numero") String numero) 
 					throws ControllerException {
 
-		Assert.hasText(numeroInitial, "Le numéro de l'opération est obligatoire");
-
+		numero = verifierNumero(numero);
+		
 		try {
-			Operation operation = operationService.rechercherParNumero(numeroInitial);
+			Operation operation = operationService.rechercherParNumero(numero);
 			if ( operation == null ) {
 				throw new ControllerException(
 						ControllerErreur.OPERATION_NON_TROUVEE_PAR_NUMERO,
-						numeroInitial);
+						numero);
 			}
 			operationService.supprimerOperation(operation.getId());
 		} 
@@ -179,7 +173,7 @@ public class OperationController {
 			throw new ControllerException(
 					e,
 					ControllerErreur.OPERATION_SUPPRESSION_PROBLEME,
-					numeroInitial);
+					numero);
 		}
 	}
 
@@ -200,7 +194,6 @@ public class OperationController {
 		// Préparation de la première ligne de détail
 		//
 		DetailOperation detailOperation = new DetailOperation();
-
 		detailOperation.setOperation(operation);
 		detailOperation.setMontantDetailEnCentimes(verifierMontantEnCentimes(dto.montantTotalEnCentimes));
 		detailOperation.setSousCategorie(verifierSousCategorieEnregistree(dto.nomSousCategorie));
@@ -280,11 +273,13 @@ public class OperationController {
 		}
 	}
 
-	private String verifierNumero(String numero) {
+	private String verifierNumero(String numero) 
+			throws ControllerException {
 
 		if ( numero == null 
 				|| numero.isBlank() ) {
-			return String.format("RDM-%08d", generateurNumeroOperation.nextInt(1, 100000000));
+			throw new ControllerException(
+					ControllerErreur.OPERATION_NUMERO_OBLIGATOIRE);
 		}
 
 		return numero;

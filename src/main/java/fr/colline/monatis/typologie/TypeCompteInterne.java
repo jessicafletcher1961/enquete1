@@ -4,12 +4,12 @@ public enum TypeCompteInterne {
 
 	COMPTE_EUROS ("EUROS", "Compte en euros"),
 	LIVRETS ("LIV", "Livret"),
-	ASSURANCE_VIE ("VIE", "Assurance-vie"),
-	COMPTE_CAPITALISATION ("CC", "Compte de capitalisation"),
 	PEA("PEA", "Plan Epargne en actions"),
-	IMMOBILIER("IMM", "Immobilier"),
-	EMPRUNT("EMP", "Emprunt"),
-	LIQUIDE("LIQ", "Argent liquide"),
+	ASSURANCE_VIE ("VIE", "Assurance-vie"),
+	COMPTE_CAPITALISATION ("TITRES", "Compte de capitalisation"),
+	IMMOBILIER("IMMOBILIER", "Immobilier"),
+	EMPRUNT("EMPRUNT", "Emprunt"),
+	LIQUIDE("LIQUIDE", "Argent liquide"),
 	OR("OR", "Pièces d'or"),
 	;
 	

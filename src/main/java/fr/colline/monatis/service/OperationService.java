@@ -24,17 +24,11 @@ import jakarta.annotation.Nullable;
 @Service
 public class OperationService {
 
-	@Autowired private OperationRepository repository;
+	@Autowired private OperationRepository operationrepository;
 
 	@Autowired private DetailOperationService detailOperationService;
 	@Autowired private CompteTousTypeService compteTousTypeService;
 
-	/**
-	 * Recherche une opération d'après l'id indiqué
-	 * @param operationId l'id de l'opération recherchée
-	 * @return l'opération recherchée ou null si inexistante
-	 * @throws ServiceTechniqueException si un problème survient lors de la recherche en base
-	 */
 	public Operation rechercherParId(Long operationId) 
 			throws ServiceTechniqueException {
 
@@ -45,7 +39,7 @@ public class OperationService {
 				.getMessage(Operation.class.getSimpleName()));
 
 		try {
-			Optional<Operation> optional = repository.findById(operationId);
+			Optional<Operation> optional = operationrepository.findById(operationId);
 			return optional.isEmpty() ? null : optional.get();
 		}
 		catch (Throwable t) {
@@ -56,12 +50,6 @@ public class OperationService {
 		}
 	}
 
-	/**
-	 * Vérifie si l'opération désignée par l'id indiqué est bien présente en base
-	 * @param operationId l'id de l'opération
-	 * @return true si l'opération est présente en base
-	 * @throws ServiceTechniqueException si un problème survient lors de la recherche en base
-	 */
 	public boolean isExistantParId(Long operationId) 
 			throws ServiceTechniqueException {
 
@@ -70,7 +58,7 @@ public class OperationService {
 				ServiceProgrammationErreur.ID_NULL.getMessage(Operation.class.getSimpleName()));
 
 		try {
-			return repository.existsById(operationId);
+			return operationrepository.existsById(operationId);
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException(
@@ -80,12 +68,6 @@ public class OperationService {
 		}
 	}
 
-	/**
-	 * Recherche une opération d'après le numéro indiqué
-	 * @param operationNumero le numéro de l'opération recherchée
-	 * @return l'opération recherchée ou null si inexistante
-	 * @throws ServiceTechniqueException si un problème survient lors de la recherche en base
-	 */
 	public Operation rechercherParNumero(String operationNumero) 
 			throws ServiceTechniqueException {
 
@@ -94,7 +76,7 @@ public class OperationService {
 				ServiceProgrammationErreur.NUMERO_NULL.getMessage());
 
 		try {
-			Optional<Operation> optional = repository.findByNumero(operationNumero);
+			Optional<Operation> optional = operationrepository.findByNumero(operationNumero);
 			return optional.isEmpty() ? null : optional.get();
 		}
 		catch (Throwable t) {
@@ -112,7 +94,7 @@ public class OperationService {
 				ServiceProgrammationErreur.NUMERO_NULL.getMessage());
 
 		try {
-			return repository.existsByNumero(operationNumero);
+			return operationrepository.existsByNumero(operationNumero);
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException(
@@ -126,7 +108,7 @@ public class OperationService {
 			throws ServiceTechniqueException {
 
 		try {
-			return repository.findAll();
+			return operationrepository.findAll();
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException (
@@ -145,7 +127,7 @@ public class OperationService {
 				.getMessage(Operation.class.getSimpleName()));
 
 		try {
-			return repository.findAll(tri);
+			return operationrepository.findAll(tri);
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException (
@@ -158,7 +140,7 @@ public class OperationService {
 			throws ServiceTechniqueException {
 
 		try {
-			repository.deleteAll();
+			operationrepository.deleteAll();
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException (
@@ -212,7 +194,7 @@ public class OperationService {
 				ServiceProgrammationErreur.OPERATION_NULL.getMessage());
 
 		try {
-			return repository.save(operation);
+			return operationrepository.save(operation);
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException (
@@ -230,7 +212,7 @@ public class OperationService {
 				ServiceProgrammationErreur.OPERATION_NULL.getMessage());
 
 		try {
-			repository.deleteById(operation.getId());
+			operationrepository.deleteById(operation.getId());
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException (
@@ -272,16 +254,16 @@ public class OperationService {
 
 		// Avant d'enregistrer l'opération avec les nouvelles lignes et les lignes à conserver,
 		// on doit supprimer les anciennes lignes.
-		Set<DetailOperation> ancienneListe = new HashSet<>(detailOperationService.rechercherTousParOperationId(operation.getId()));
-		Set<DetailOperation> nouvelleListe = new HashSet<>(operation.getDetailsOperation());
-		Set<DetailOperation> toDel = new HashSet<>(ancienneListe);
-		toDel.removeAll(nouvelleListe);
-		for ( DetailOperation detailOperationASupprimer : toDel ) {
-			if ( operation.getDetailsOperation().remove(detailOperationASupprimer) ) {
-				detailOperationASupprimer.setOperation(null);
-			}
-			detailOperationService.retirerDetailOperation(detailOperationASupprimer);
-		}
+//		Set<DetailOperation> ancienneListe = new HashSet<>(detailOperationService.rechercherTousParOperationId(operation.getId()));
+//		Set<DetailOperation> nouvelleListe = new HashSet<>(operation.getDetailsOperation());
+//		Set<DetailOperation> toDel = new HashSet<>(ancienneListe);
+//		toDel.removeAll(nouvelleListe);
+//		for ( DetailOperation detailOperationASupprimer : toDel ) {
+//			if ( operation.getDetailsOperation().remove(detailOperationASupprimer) ) {
+//				detailOperationASupprimer.setOperation(null);
+//			}
+//			detailOperationService.retirerDetailOperation(detailOperationASupprimer);
+//		}
 
 		return operation;
 	}
@@ -325,8 +307,7 @@ public class OperationService {
 			@Nullable String operationNumero) 
 					throws ServiceFonctionnelleException, ServiceTechniqueException {
 
-		if ( operationNumero == null
-				|| operationNumero.isBlank() ) {
+		if ( operationNumero == null || operationNumero.isBlank() ) {
 			throw new ServiceFonctionnelleException (
 					ServiceFonctionnelleErreur.OPERATION_NUMERO_INVALIDE);
 		}
@@ -342,8 +323,8 @@ public class OperationService {
 		else {
 			// En cours modification
 			try {
-				isNumeroCreeOuModifie = ! repository.existsByNumeroAndId(operationNumero, operationId);
-				isNumeroDejaUtilise = repository.existsByNumeroAndIdNot(operationNumero, operationId);
+				isNumeroCreeOuModifie = ! operationrepository.existsByNumeroAndId(operationNumero, operationId);
+				isNumeroDejaUtilise = operationrepository.existsByNumeroAndIdNot(operationNumero, operationId);
 			}
 			catch ( Throwable t ) {
 				throw new ServiceTechniqueException (
@@ -353,8 +334,7 @@ public class OperationService {
 			}
 		}
 
-		if ( isNumeroCreeOuModifie 
-				&& isNumeroDejaUtilise ) {
+		if ( isNumeroCreeOuModifie && isNumeroDejaUtilise ) {
 			throw new ServiceFonctionnelleException (
 					ServiceFonctionnelleErreur.OPERATION_NUMERO_DEJA_UTILISE,
 					operationNumero);

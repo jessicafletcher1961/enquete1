@@ -399,8 +399,8 @@ public abstract class ReferenceService<T extends Reference> {
 			isNomDejaUtilise = isExistantParNom(referenceNom);
 		}
 		else {
-			// En cours modification
 			try {
+				// En cours modification
 				isNomCreeOuModifie = ! getRepository().existsByNomAndId(referenceNom, referenceId);
 				isNomDejaUtilise = getRepository().existsByNomAndIdNot(referenceNom, referenceId);
 			}
@@ -408,8 +408,7 @@ public abstract class ReferenceService<T extends Reference> {
 				throw new ServiceTechniqueException (
 						t,
 						ServiceTechniqueErreur.TECH_EXISTANCE_REFERENCE_PAR_NOM,
-						referenceNom,
-						getTClass().getSimpleName());
+						referenceNom);
 			}
 		}
 
