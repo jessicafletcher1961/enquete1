@@ -9,9 +9,14 @@ import fr.colline.monatis.model.SousCategorie;
 @Repository
 public interface SousCategorieRepository extends ReferenceRepository<SousCategorie> {
 
+	@Override
 	@Query(nativeQuery = true,
-			value = "select count(id) from public.detail_operation where sous_categorie_id = :id")
-	public int compterDetailOperationParSousCategorieId(@Param("id") Long id);
+			value = "select count(1) <> 0 from public.sous_categorie where nom = :nom")
+	public boolean existsByNom(@Param("nom") String nom);
+	
+	@Query(nativeQuery = true,
+			value = "select count(1) <> 0 from public.detail_operation where sous_categorie_id = :id")
+	public boolean existsDetailOperationParSousCategorieId(@Param("id") Long id);
 
 	@Query(nativeQuery = true,
 			value = "select categorie_id from public.sous_categorie where id = :id")

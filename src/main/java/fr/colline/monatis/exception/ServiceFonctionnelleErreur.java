@@ -165,12 +165,12 @@ public enum ServiceFonctionnelleErreur {
 	/**
 			TypeErreur.FONCTIONNELLE,
 			"SSC-0003",
-			"La sous-catégorie '%s' ne peut être supprimée car elle est encore reliée à %s lignes de détail d'opérations"),
+			"La sous-catégorie '%s' ne peut être supprimée car elle est encore reliée à au moins une ligne de détail"),
 	 */
 	SOUS_CATEGORIE_SUPPRESSION_AVEC_DETAIL_OPERATION(
 			TypeErreur.FONCTIONNELLE,
 			"SSC-0003",
-			"La sous-catégorie '%s' ne peut être supprimée car elle est encore reliée à %s lignes de détail d'opérations"),
+			"La sous-catégorie '%s' ne peut être supprimée car elle est encore reliée à au moins une ligne de détail"),
 
 	// --- DOMAINE TITULAIRE
 

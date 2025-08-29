@@ -145,7 +145,6 @@ public class SousCategorieController {
 						ControllerErreur.SOUS_CATEGORIE_NON_TROUVEE_PAR_NOM,
 						nom);
 			}
-			sousCategorie.changerCategorie(null);
 			sousCategorieService.supprimerReference(sousCategorie.getId());
 		} 
 		catch (ServiceTechniqueException e) {

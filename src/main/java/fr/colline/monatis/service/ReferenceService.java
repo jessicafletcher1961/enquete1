@@ -198,14 +198,6 @@ public abstract class ReferenceService<T extends Reference> {
 		return enregistrer(reference);
 	}
 
-	/**
-	 * Modification d'une référence de type "T extends Reference"
-	 * 
-	 * @param reference la référence modifiée
-	 * @return la référence mise à jour
-	 * @throws ServiceTechniqueException si un problème survient avec la base
-	 * @throws ServiceFonctionnelleException si la référence ne peut pas être modifiée pour des raisons fonctionnelles
-	 */
 	public final T modifierReference(T reference) 
 			throws ServiceTechniqueException, ServiceFonctionnelleException {
 		
@@ -218,13 +210,6 @@ public abstract class ReferenceService<T extends Reference> {
 		return enregistrer(reference);
 	}
 
-	/**
-	 * Suppression d'une référence existante de type "T extends Reference"
-	 * 
-	 * @param reference la référence à supprimer
-	 * @throws ServiceTechniqueException si un problème survient avec la base
-	 * @throws ServiceFonctionnelleException si la référence ne peut pas être supprimée pour des raisons fonctionnelles
-	 */
 	public final void supprimerReference(Long referenceId) 
 			throws ServiceTechniqueException, ServiceFonctionnelleException {
 
@@ -237,14 +222,6 @@ public abstract class ReferenceService<T extends Reference> {
 		supprimer(reference);
 	}
 
-	/**
-	 * Enregistrer une référence de type "T extends Reference" en base
-	 * 
-	 * @param reference la référence à enregistrer en base
-	 * @return la référence après enregistrement
-	 * @throws IllegalArgumentException si la référence passée est à null
-	 * @throws ServiceTechniqueException si un problème survient avec la base
-	 */
 	protected T enregistrer(T reference) 
 			throws ServiceTechniqueException {
 
@@ -264,22 +241,11 @@ public abstract class ReferenceService<T extends Reference> {
 		}
 	}
 
-	/**
-	 * Supprimer une référence de type "T extends Reference" en base
-	 * 
-	 * @param reference la référence à supprimer en base
-	 * @throws IllegalArgumentException si la référence passée est à null
-	 * @throws ServiceTechniqueException si un problème survient avec la base
-	 */
 	protected void supprimer(T reference) 
 			throws ServiceTechniqueException {
 
-		Assert.notNull(
-				reference, 
-				ServiceProgrammationErreur.REFERENCE_NULL.getMessage(getTClass().getSimpleName()));
-
 		try {
-			this.getRepository().deleteById(reference.getId());
+			this.getRepository().delete(reference);
 		}
 		catch (Throwable t) {
 			throw new ServiceTechniqueException (
@@ -290,13 +256,6 @@ public abstract class ReferenceService<T extends Reference> {
 		}
 	}
 
-	/**
-	 * Contrôles avant création d'une référence de type "T extends Reference"
-	 * 
-	 * @param reference la référence à vérifier dans le cadre d'une création
-	 * @throws ServiceFonctionnelleException si la référence indiquée a un id ou n'a pas de nom ou qu'une autre référence de même type a le même nom
-	 * @throws ServiceTechniqueException si un problème survient avec la base
-	 */
 	protected T controlerEtPreparerPourCreation(T reference) 
 			throws ServiceTechniqueException, ServiceFonctionnelleException {
 
@@ -310,16 +269,6 @@ public abstract class ReferenceService<T extends Reference> {
 		return reference;
 	}
 
-	/**
-	 * Contrôles avant modification d'une référence de type "T extends Reference"<br>
-	 * Si l'un des attributs est à null, son contenu est récupéré en base d'après la version précédente de la référence
-	 * 
-	 * @param reference la référence modifiée à enregistrer
-	 * @return la référence modifiée 
-	 * @throws ServiceTechniqueException si un problème survient avec la base
-	 * @throws ServiceFonctionnelleException si la référence à supprimer n'a pas d'id ou que cet id n'est pas en base,
-	 * ou que le nom a changé mais qu'une autre référence utilise déjà ce nouveau nom
-	 */
 	protected T controlerEtPreparerPourModification(T reference) 
 			throws ServiceFonctionnelleException, ServiceTechniqueException {
 

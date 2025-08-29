@@ -13,9 +13,7 @@ public class Categorie extends Reference{
 
 	@OneToMany(
 			mappedBy = "categorie",
-			cascade = CascadeType.ALL,
-			fetch = FetchType.EAGER,
-			orphanRemoval = true)
+			fetch = FetchType.LAZY)
 	private Set<SousCategorie> sousCategories = new HashSet<>();
 
 	public Set<SousCategorie> getSousCategories() {

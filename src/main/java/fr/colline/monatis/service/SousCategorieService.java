@@ -67,9 +67,9 @@ public class SousCategorieService extends ReferenceService<SousCategorie> {
 	private void verifierAbsenceDetailOperationAssocie(Long sousCategorieId, String sousCategorieNom) 
 			throws ServiceFonctionnelleException, ServiceTechniqueException {
 
-		int nombreDetailOperation;
+		boolean presenceDetailOperation;
 		try {
-			nombreDetailOperation = sousCategorieRepository.compterDetailOperationParSousCategorieId(sousCategorieId);
+			presenceDetailOperation = sousCategorieRepository.existsDetailOperationParSousCategorieId(sousCategorieId);
 		}
 		catch ( Throwable t ) {
 			throw new ServiceTechniqueException(
@@ -77,11 +77,10 @@ public class SousCategorieService extends ReferenceService<SousCategorie> {
 					sousCategorieId);
 		}
 
-		if ( nombreDetailOperation > 0 ) {
+		if ( presenceDetailOperation ) {
 			throw new ServiceFonctionnelleException(
 					ServiceFonctionnelleErreur.SOUS_CATEGORIE_SUPPRESSION_AVEC_DETAIL_OPERATION, 
-					sousCategorieNom,
-					nombreDetailOperation);
+					sousCategorieNom);
 		}
 	}
 	

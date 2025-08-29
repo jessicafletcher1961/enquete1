@@ -42,4 +42,24 @@ public class SousCategorie extends Reference {
 		if (nouvelleCategorie != null) 
 			nouvelleCategorie.getSousCategories().add(this);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(categorie);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SousCategorie other = (SousCategorie) obj;
+		return Objects.equals(categorie, other.categorie);
+	}
 }

@@ -150,42 +150,36 @@ public abstract class CompteService<T extends Compte> {
 		}
 	}
 
-	public T creerCompte(T compte) 
+	public final T creerCompte(T compte) 
 			throws ServiceFonctionnelleException, ServiceTechniqueException {
 
 		Assert.notNull(
 				compte, 
-				ServiceProgrammationErreur
-				.COMPTE_NULL
-				.getMessage(getTClass().getSimpleName()));
+				ServiceProgrammationErreur.COMPTE_NULL.getMessage(getTClass().getSimpleName()));
 
 		compte = controlerEtPreparerPourCreation(compte);
 
 		return enregistrer(compte);
 	}
 
-	public T modifierCompte(T compte) 
+	public final T modifierCompte(T compte) 
 			throws ServiceTechniqueException, ServiceFonctionnelleException {
 
 		Assert.notNull(
 				compte, 
-				ServiceProgrammationErreur
-				.COMPTE_NULL
-				.getMessage(getTClass().getSimpleName()));
+				ServiceProgrammationErreur.COMPTE_NULL.getMessage(getTClass().getSimpleName()));
 
 		compte = controlerEtPreparerPourModification(compte);
 
 		return enregistrer(compte);
 	}
 
-	public void supprimerCompte(Long compteId) 
+	public final void supprimerCompte(Long compteId) 
 			throws ServiceTechniqueException, ServiceFonctionnelleException {
 
 		Assert.notNull(
 				compteId, 
-				ServiceProgrammationErreur
-				.ID_NULL
-				.getMessage(getTClass().getSimpleName()));
+				ServiceProgrammationErreur.ID_NULL.getMessage(getTClass().getSimpleName()));
 
 		T compte = controlerEtPreparerPourSuppression(compteId);
 

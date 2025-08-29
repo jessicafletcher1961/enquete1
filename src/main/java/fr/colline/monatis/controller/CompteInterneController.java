@@ -152,9 +152,6 @@ public class CompteInterneController {
 						ControllerErreur.COMPTE_INTERNE_NON_TROUVE_PAR_IDENTIFIANT,
 						identifiant);
 			}
-//			compteInterne.changerBanque(null);
-//			compteInterne.getTitulaires().clear();
-//			compteInterne.changerTitulaires(compteInterne.getTitulaires());
 			compteInterneService.supprimerCompte(compteInterne.getId());
 		}
 		catch ( ServiceTechniqueException e ) {
@@ -272,8 +269,6 @@ public class CompteInterneController {
 	private Set<Titulaire> verifierTitulairesEnregistres(List<String> nomsTitulaires) 
 			throws ControllerException {
 
-		Set<Titulaire> titulaires = new HashSet<>();
-
 		if ( nomsTitulaires == null ) {
 			throw new ControllerException(
 					ControllerErreur.COMPTE_INTERNE_TABLEAU_NOM_TITULAIRE_OBLIGATOIRE);
@@ -284,6 +279,8 @@ public class CompteInterneController {
 			throw new ControllerException(
 					ControllerErreur.COMPTE_INTERNE_AU_MOINS_UN_TITULAIRE_REQUIS);
 		}
+
+		Set<Titulaire> titulaires = new HashSet<>();
 
 		for ( String nomTitulaire : nomsTitulaires ) {
 			try {
