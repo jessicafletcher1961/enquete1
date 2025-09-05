@@ -1,7 +1,5 @@
 package fr.colline.monatis.exception;
 
-import fr.colline.monatis.typologie.TypeErreur;
-
 public enum ServiceFonctionnelleErreur {
 
 	// ------------------------- //

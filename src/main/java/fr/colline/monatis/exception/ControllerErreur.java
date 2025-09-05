@@ -2,8 +2,6 @@ package fr.colline.monatis.exception;
 
 import org.springframework.http.HttpStatus;
 
-import fr.colline.monatis.typologie.TypeErreur;
-
 public enum ControllerErreur {
 
 	/**
@@ -346,6 +344,53 @@ public enum ControllerErreur {
 			TypeErreur.FONCTIONNELLE,
 			"CPT-0001",
 			"Aucun compte (interne ou tiers) d'identifiant '%s' n'a été trouvé"),
+
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0002",
+			"Un compte de type de fonctionnement '%s' est incompatible en dépense avec des opération de type '%s'"),
+	 */
+	TYPE_COMPTE_DEPENSE_INCOMPATIBLE_TYPE_OPERATION(
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0002",
+			"Un compte de type de fonctionnement '%s' est incompatible en dépense avec des opération de type '%s'"),
+
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0003",
+			"Un compte de type de fonctionnement '%s' est incompatible en recette avec des opération de type '%s'"),
+	 */
+	TYPE_COMPTE_RECETTE_INCOMPATIBLE_TYPE_OPERATION(
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0003",
+			"Un compte de type de fonctionnement '%s' est incompatible en recette avec des opération de type '%s'"),
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0004",
+			"Le type de fonctionnement de compte '%s' n'est pas géré"),
+	 */
+	TYPE_FONCTIONNEMENT_COMPTE_NON_GERE(
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0004",
+			"Le type de fonctionnement de compte '%s' n'est pas géré"),
+
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0005",
+			"La classe de compte '%s' n'est pas gérée"),
+	 */
+	COMPTE_CLASSE_NON_GEREE(
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.FONCTIONNELLE,
+			"CPT-0005",
+			"La classe de compte '%s' n'est pas gérée"),
 	
 	/**
 			HttpStatus.NOT_FOUND,
@@ -646,6 +691,30 @@ public enum ControllerErreur {
 			TypeErreur.PROGRAMMATION,
 			"OPE-0011",
 			"Une opération doit obligatoirement avoir un numero"), 
+
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.PROGRAMMATION,
+			"OPE-0012",
+			"Une opération doit obligatoirement avoir un type"),
+	 */
+	OPERATION_TYPE_OPERATION_OBLIGATOIRE(			
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.PROGRAMMATION,
+			"OPE-0012",
+			"Une opération doit obligatoirement avoir un type"),
+
+	/**
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.PROGRAMMATION,
+			"OPE-0013",
+			"Aucun type d'opération de code '%s' n'a été trouvé"),
+	 */
+	TYPE_OPERATION_NON_TROUVE_PAR_CODE(			
+			HttpStatus.BAD_REQUEST,
+			TypeErreur.PROGRAMMATION,
+			"OPE-0013",
+			"Aucun type d'opération de code '%s' n'a été trouvé"),
 	
 	
 	;

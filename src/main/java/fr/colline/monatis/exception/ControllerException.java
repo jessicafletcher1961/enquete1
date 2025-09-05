@@ -2,8 +2,6 @@ package fr.colline.monatis.exception;
 
 import org.springframework.http.HttpStatus;
 
-import fr.colline.monatis.typologie.TypeErreur;
-
 public class ControllerException 
 extends Exception
 implements MonatisExceptionInterface {

@@ -6,7 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import fr.colline.monatis.repository.CompteTiersRepository;
+import fr.colline.monatis.comptes.repository.CompteTiersRepository;
+import fr.colline.monatis.comptes.service.CompteTiersService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CompteTiersServiceTests {

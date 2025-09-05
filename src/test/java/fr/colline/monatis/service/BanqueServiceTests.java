@@ -6,7 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import fr.colline.monatis.repository.BanqueRepository;
+import fr.colline.monatis.references.repository.BanqueRepository;
+import fr.colline.monatis.references.service.BanqueService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BanqueServiceTests {

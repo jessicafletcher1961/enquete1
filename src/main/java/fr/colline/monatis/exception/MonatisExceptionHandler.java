@@ -4,8 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import fr.colline.monatis.controller.dto.ErreurDto;
-
 @ControllerAdvice
 public class MonatisExceptionHandler {
 
